@@ -1,19 +1,19 @@
 const express = require('express');
+const router = express.Router();
+const notesClass = require('../db/db.js');
 
-const PORT = 3001;
-
-const app = express();
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.get('/notes', (req, res) => {
-  res.json(`${req.method} method received`);
+router.get('/notes', (req, res) => {
   // store notes and return them
+  notesClass.getNotes().then((notes) =>{
+    return res.json(notes);
+  });
 })
 
-app.post('/notes', (req, res) =>{
-
+router.post('/notes', (req, res) =>{
+  console.log(req.body);
+  notesClass.addNote(req.body).then((err, notes)=>{
+    res.json(notes);
+  })
 })
 
-app.get('')
+module.exports = router;
